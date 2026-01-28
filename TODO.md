@@ -1,19 +1,29 @@
-# Mobile Performance Optimization TODO
+# TODO: Make Frontend Responsive and Lightweight
 
-## Completed
-- [x] Analyze current codebase and identify performance bottlenecks
-- [x] Create comprehensive optimization plan
-- [x] Disable grain-overlay on mobile devices
-- [x] Disable aura-blob animations on mobile devices
-- [x] Disable backdrop-filter blur on header for mobile
-- [x] Add defer attribute to main.js script tag
-- [x] Remove preload links for CSS and JS
-- [x] Add fine pointer detection for desktop-only features (magnetic, tilt, custom cursor)
-- [x] Add prefers-reduced-motion support in CSS and JS
+## Information Gathered
+- Current site uses Bootstrap (heavy), multiple fonts (Outfit + Playfair), heavy effects (grain overlay, aura blobs, backdrop-filter, tilt/magnetic on desktop).
+- Responsiveness is in style.css with media queries.
+- JS has advanced features like tilt, magnetic, custom cursor.
+- Images are JPG/PNG, some lazy loaded.
+- User wants vanilla HTML/CSS/JS, one font family (Inter 400,600), SVG icons, mobile-first, Flex/Grid, clamp(), minimal JS, no heavy effects.
 
-## Pending Tasks
-- [ ] Convert hero images to WebP format (manual task - use Squoosh or similar)
-- [ ] Convert team/gallery images to WebP format (manual task - use Squoosh or similar)
-- [ ] Optimize image sizes (target ≤300KB for hero, ≤180KB for others)
-- [ ] Test performance improvements on mobile devices
-- [ ] Verify all features work correctly on desktop after changes
+## Plan
+- Remove Bootstrap from HTML.
+- Update fonts to Inter (400,600).
+- Use mini CSS framework: container, grid, spacing, clamp.
+- Rewrite CSS mobile-first: use clamp for fonts, Flex/Grid, max-width, %, rem.
+- Remove heavy effects: grain overlay, aura blobs, backdrop-filter, tilt/magnetic/custom cursor.
+- Simplify animations to transform/opacity.
+- Keep essential JS: slider, menu, theme toggle, scroll reveal.
+- Ensure all images have loading="lazy" and decoding="async".
+- Adapt HTML structure to vanilla.
+
+## Dependent Files to Edit
+- index.html: remove Bootstrap, update fonts to Inter, add loading attributes.
+- css/style.css: complete rewrite with mini framework.
+- js/main.js: remove tilt, magnetic, custom cursor; keep slider, menu, theme, reveal.
+
+## Followup Steps
+- Test responsiveness on different screen sizes.
+- Check performance with Lighthouse.
+- Optimize images to WebP if needed.
