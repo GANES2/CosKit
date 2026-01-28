@@ -1,28 +1,19 @@
-# TODO: Optimize Website Responsiveness and Performance
+# Mobile Performance Optimization TODO
 
-## Responsiveness Improvements
-- [ ] Add more responsive breakpoints (e.g., 480px, 360px) for better mobile experience
-- [ ] Fix hero title scaling on very small screens
-- [ ] Ensure team and gallery grids stack properly on all devices
-- [ ] Optimize mobile menu for touch devices
-- [ ] Test and fix any layout bugs on different screen sizes
+## Completed
+- [x] Analyze current codebase and identify performance bottlenecks
+- [x] Create comprehensive optimization plan
+- [x] Disable grain-overlay on mobile devices
+- [x] Disable aura-blob animations on mobile devices
+- [x] Disable backdrop-filter blur on header for mobile
+- [x] Add defer attribute to main.js script tag
+- [x] Remove preload links for CSS and JS
+- [x] Add fine pointer detection for desktop-only features (magnetic, tilt, custom cursor)
+- [x] Add prefers-reduced-motion support in CSS and JS
 
-## Performance Optimizations
-- [ ] Add lazy loading to all images
-- [ ] Optimize image sizes and formats (consider WebP)
-- [ ] Minify CSS and JS files
-- [ ] Remove unused CSS rules
-- [ ] Optimize font loading
-- [ ] Add preload for critical resources
-
-## Bug Fixes
-- [ ] Ensure no horizontal scroll on mobile
-- [ ] Fix any z-index issues
-- [ ] Test theme toggle on mobile
-- [ ] Verify scroll reveal animations work smoothly
-- [ ] Check custom cursor doesn't interfere on touch devices
-
-## Testing
-- [ ] Test on various devices and browsers
-- [ ] Validate HTML/CSS
-- [ ] Check performance scores
+## Pending Tasks
+- [ ] Convert hero images to WebP format (manual task - use Squoosh or similar)
+- [ ] Convert team/gallery images to WebP format (manual task - use Squoosh or similar)
+- [ ] Optimize image sizes (target ≤300KB for hero, ≤180KB for others)
+- [ ] Test performance improvements on mobile devices
+- [ ] Verify all features work correctly on desktop after changes

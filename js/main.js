@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Performance optimization: Use requestAnimationFrame for smooth animations
     let animationFrameId = null;
 
+    // Check for fine pointer devices (desktop with mouse)
+    const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
     // Throttle function for performance
     function throttle(func, limit) {
         let inThrottle;
@@ -56,72 +59,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. [DEPRECATED OLD LOGIC - MERGED INTO STEP 7]
 
-    // 3. Tilt Effect Logic & Magnetic Buttons
-    const cards = document.querySelectorAll('.team-card, .card');
-    const magneticBtns = document.querySelectorAll('.magnetic');
+    // 3. Tilt Effect Logic & Magnetic Buttons (only on fine pointer devices)
+    if (isFinePointer) {
+        const cards = document.querySelectorAll('.team-card, .card');
+        const magneticBtns = document.querySelectorAll('.magnetic');
 
-    // Magnetic Logic
-    magneticBtns.forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.transform = `translate(0, 0)`;
-        });
-    });
-
-    // Optimized tilt effects with throttling
-    cards.forEach(card => {
-        let cardAnimationId = null;
-
-        const handleMouseMove = throttle((e) => {
-            if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
-
-            cardAnimationId = requestAnimationFrame(() => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        // Magnetic Logic
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
-        }, 16);
-
-        const handleMouseLeave = () => {
-            if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
-            cardAnimationId = requestAnimationFrame(() => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0, 0)`;
             });
-        };
+        });
 
-        card.addEventListener('mousemove', handleMouseMove);
-        card.addEventListener('mouseleave', handleMouseLeave);
-    });
+        // Optimized tilt effects with throttling
+        cards.forEach(card => {
+            let cardAnimationId = null;
 
-    // 4. Custom Cursor Logic
-    const cursor = document.querySelector('.custom-cursor');
-    const cursorDot = document.querySelector('.custom-cursor-dot');
+            const handleMouseMove = throttle((e) => {
+                if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
 
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-    });
+                cardAnimationId = requestAnimationFrame(() => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
 
-    const activeElements = document.querySelectorAll('a, button, .team-card, .card');
-    activeElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('link-hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('link-hover'));
-    });
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+            }, 16);
+
+            const handleMouseLeave = () => {
+                if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
+                cardAnimationId = requestAnimationFrame(() => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            };
+
+            card.addEventListener('mousemove', handleMouseMove);
+            card.addEventListener('mouseleave', handleMouseLeave);
+        });
+    }
+
+    // 4. Custom Cursor Logic (only on fine pointer devices)
+    if (isFinePointer) {
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.custom-cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        const activeElements = document.querySelectorAll('a, button, .team-card, .card');
+        activeElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('link-hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('link-hover'));
+        });
+    }
 
     // 5. Mobile Menu Logic
     const menuToggle = document.querySelector('.menu-toggle');
