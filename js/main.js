@@ -154,14 +154,14 @@ document.addEventListener("DOMContentLoaded", () => {
             menuToggle.classList.toggle('active');
 
             // Prevent scrolling when menu is open
-            document.body.style.overflow = isActive ? 'hidden' : 'auto';
+            document.body.classList.toggle('menu-open', isActive);
         });
 
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('active');
                 menuToggle.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                document.body.classList.remove('menu-open');
             });
         });
     }
