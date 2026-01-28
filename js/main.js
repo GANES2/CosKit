@@ -20,6 +20,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Debounce function for performance
+    function debounce(func, delay) {
+        let timeoutId;
+        return function() {
+            const args = arguments;
+            const context = this;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(context, args), delay);
+        }
+    }
+
     // 1. Hero Slider Logic
     const slides = document.querySelectorAll('.hero-slide');
     let currentSlide = 0;
@@ -66,22 +77,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Magnetic Logic
         magneticBtns.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
+            const debouncedMagnetic = debounce((e) => {
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-            });
+            }, 16);
+            btn.addEventListener('mousemove', debouncedMagnetic);
             btn.addEventListener('mouseleave', () => {
                 btn.style.transform = `translate(0, 0)`;
             });
         });
 
-        // Optimized tilt effects with throttling
+        // Optimized tilt effects with debouncing
         cards.forEach(card => {
             let cardAnimationId = null;
 
-            const handleMouseMove = throttle((e) => {
+            const handleMouseMove = debounce((e) => {
                 if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
 
                 cardAnimationId = requestAnimationFrame(() => {
@@ -116,12 +128,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const cursor = document.querySelector('.custom-cursor');
         const cursorDot = document.querySelector('.custom-cursor-dot');
 
-        document.addEventListener('mousemove', (e) => {
+        const debouncedCursorMove = debounce((e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
             cursorDot.style.left = e.clientX + 'px';
             cursorDot.style.top = e.clientY + 'px';
-        });
+        }, 16);
+        document.addEventListener('mousemove', debouncedCursorMove);
 
         const activeElements = document.querySelectorAll('a, button, .team-card, .card');
         activeElements.forEach(el => {
