@@ -1137,6 +1137,27 @@ body.light-mode .footer-quote {
 }
 
 /* --- Responsive --- */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 50px;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 30px;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 30px;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-title {
     font-size: 3.5rem;
@@ -1149,10 +1170,20 @@ body.light-mode .footer-quote {
 
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
   }
 
   .catalog-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
+  }
+
+  .section::before {
+    font-size: 12rem;
+  }
+
+  .schedule-section::before {
+    font-size: 12rem;
   }
 }
 
@@ -1360,15 +1391,55 @@ body.light-mode .footer-quote {
 
   .team-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 40px;
+    padding: 0 15px;
   }
 
   .team-card {
-    height: 500px;
+    height: auto;
+    min-height: 480px;
+    margin-bottom: 30px;
+    padding: 25px 20px 70px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .team-card::before,
+  .team-card::after {
+    display: none;
+  }
+
+  .team-card:hover {
+    transform: none;
   }
 
   .catalog-grid {
     grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 15px;
+  }
+
+  .card {
+    margin-bottom: 30px;
+    padding: 18px 15px 55px 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .card::before,
+  .card::after {
+    display: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card-img {
+    height: 320px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
   }
 
   .schedule-section {
@@ -1380,5 +1451,183 @@ body.light-mode .footer-quote {
     flex-direction: column;
     text-align: center;
     gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 80vh;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .btn {
+    min-width: 180px;
+    height: 45px;
+    font-size: 0.75rem;
+    padding: 0 25px;
+  }
+
+  .top-bar {
+    font-size: 0.6rem;
+    padding: 8px 0;
+  }
+
+  .top-contact span {
+    margin-right: 15px;
+  }
+
+  .top-social {
+    gap: 15px;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+  }
+
+  .stats-section {
+    padding: 60px 0;
+  }
+
+  .stat-item h3 {
+    font-size: 3rem;
+  }
+
+  .team-grid {
+    gap: 35px;
+    padding: 0 20px;
+  }
+
+  .team-card {
+    padding: 20px 18px 60px 18px;
+    margin-bottom: 25px;
+    height: auto;
+    min-height: 440px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .team-info h4 {
+    font-size: 1.3rem;
+  }
+
+  .catalog-grid {
+    gap: 35px;
+    padding: 0 20px;
+  }
+
+  .card {
+    padding: 15px 15px 50px 15px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .card::before,
+  .card::after {
+    display: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card-img {
+    height: 260px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .footer {
+    padding: 60px 15px;
+  }
+
+  .footer-links a {
+    margin: 0 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    min-width: 160px;
+    height: 42px;
+    font-size: 0.7rem;
+    padding: 0 20px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .stat-item h3 {
+    font-size: 2.5rem;
+  }
+
+  .team-grid {
+    gap: 25px;
+    padding: 0 10px;
+  }
+
+  .team-card {
+    padding: 15px 12px 50px 12px;
+    margin-bottom: 15px;
+    min-height: 380px;
+  }
+
+  .team-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .catalog-grid {
+    gap: 25px;
+    padding: 0 10px;
+  }
+
+  .card {
+    padding: 10px 10px 40px 10px;
+    margin-bottom: 15px;
+  }
+
+  .card::before,
+  .card::after {
+    display: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card-img {
+    height: 250px;
+    margin-bottom: 8px;
+  }
+
+  .event-date .day {
+    font-size: 2rem;
+  }
+
+  .event-detail h4 {
+    font-size: 1.3rem;
   }
 }

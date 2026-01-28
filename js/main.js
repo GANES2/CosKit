@@ -1,19 +1,58 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Performance optimization: Use requestAnimationFrame for smooth animations
+    let animationFrameId = null;
+
+    // Throttle function for performance
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        }
+    }
+
     // 1. Hero Slider Logic
     const slides = document.querySelectorAll('.hero-slide');
     let currentSlide = 0;
     const slideInterval = 5000;
+    let slideTimer = null;
 
     function nextSlide() {
+        if (slides.length === 0) return;
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
     }
 
-    if (slides.length > 0) {
-        setInterval(nextSlide, slideInterval);
+    function startSlider() {
+        if (slides.length > 0 && !slideTimer) {
+            slideTimer = setInterval(nextSlide, slideInterval);
+        }
     }
+
+    function stopSlider() {
+        if (slideTimer) {
+            clearInterval(slideTimer);
+            slideTimer = null;
+        }
+    }
+
+    // Pause slider when page is not visible to save resources
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopSlider();
+        } else {
+            startSlider();
+        }
+    });
+
+    startSlider();
 
     // 2. [DEPRECATED OLD LOGIC - MERGED INTO STEP 7]
 
@@ -34,24 +73,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Optimized tilt effects with throttling
     cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        let cardAnimationId = null;
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+        const handleMouseMove = throttle((e) => {
+            if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
 
-            const rotateX = (y - centerY) / 20;
-            const rotateY = (centerX - x) / 20;
+            cardAnimationId = requestAnimationFrame(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        });
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+        }, 16);
+
+        const handleMouseLeave = () => {
+            if (cardAnimationId) cancelAnimationFrame(cardAnimationId);
+            cardAnimationId = requestAnimationFrame(() => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        };
+
+        card.addEventListener('mousemove', handleMouseMove);
+        card.addEventListener('mouseleave', handleMouseLeave);
     });
 
     // 4. Custom Cursor Logic
@@ -109,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 7. Advanced Scroll Reveal Engine (Entry & Exit)
+    // 7. Advanced Scroll Reveal Engine (Entry & Exit) - Optimized
     const observerOptions = {
         threshold: 0.15,
         rootMargin: '0px 0px -50px 0px'
@@ -120,10 +172,26 @@ document.addEventListener("DOMContentLoaded", () => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
             } else {
-                entry.target.classList.remove('visible');
+                // Only remove visible class if element is above viewport (for re-triggering)
+                const rect = entry.boundingClientRect;
+                if (rect.top > 0) {
+                    entry.target.classList.remove('visible');
+                }
             }
         });
     }, observerOptions);
 
+    // Use passive listeners for better performance
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+        if (slideTimer) {
+            clearInterval(slideTimer);
+        }
+        revealObserver.disconnect();
+    });
 });
