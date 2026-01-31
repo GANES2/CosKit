@@ -1264,14 +1264,14 @@ body.light-mode .footer-quote {
     opacity: 0;
     transform: translate3d(100%, 0, 0);
     will-change: transform, opacity;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease, visibility 0s linear 260ms;
+    transition: transform 150ms ease, opacity 150ms ease, visibility 0s linear 150ms;
 }
 
   .nav.active {
     visibility: visible;
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
+    transition: transform 150ms ease, opacity 150ms ease;
 }
 
   /* Ghost Text in Menu */
@@ -1314,8 +1314,8 @@ body.light-mode .footer-quote {
     justify-content: center;
     gap: 15px;
     opacity: 0;
-    transform: translateY(40px) scale(0.9);
-    transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(20px) scale(0.95);
+    transition: 0.3s ease;
   }
 
   .nav.active .nav-links a {
